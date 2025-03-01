@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Open Event Links
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.6.66
 // @description  每10秒点击所有未点击的 <a data-testid="event_cell">，支持动态加载，并自动滚动加载
 // @author       ChatGPT
 // @match        https://www.sofascore.com/zh/*/2025-*
@@ -22,7 +22,7 @@
     let showAllButtonCount = 0;
     let allowedSecondsBeforeRedirection = 60;
     if (window.location.href.includes("football")) {
-      allowedSecondsBeforeRedirection = 366;
+      allowedSecondsBeforeRedirection = 300;
     }
 
     function getNextCategory(current) {
@@ -32,9 +32,12 @@
         }
         return categoryList[index + 1];
     }
+    // 获取 URL 的最后一部分（通常是日期）
     const urlParts = window.location.pathname.split("/");
     const lastSegment = urlParts[urlParts.length - 1];
-    let currentCategory = urlParts[2] || "football";
+
+    // 获取当前分类
+    let currentCategory = urlParts[2] || "football"; // 例如 football
     let nextCategory = getNextCategory(currentCategory);
 
     // 检查是否是 YYYY-MM-DD 格式的日期
@@ -213,7 +216,7 @@
 
         linkElement.scrollIntoView({ behavior: "smooth", block: "center" });
         linkElement.click();
-        setTimeout(() => {findLowestOdds(remainingLinks[0])}, 100);
+        setTimeout(() => {findLowestOdds(remainingLinks[0])}, 1500);
     }
 
     function findLowestOdds(linkURL) {
@@ -221,7 +224,7 @@
         let predictionsElement = document.querySelector('[data-testid="predictions"]');
 
         // 如果该元素存在，并且内部文本包含 "你的投票"，说明已经投过票，直接跳过
-        if (predictionsElement && (predictionsElement.innerText.includes("你的投票") || predictionsElement.innerText.includes("投票结束"))) {
+        if (!predictionsElement || (predictionsElement.innerText.includes("你的投票") || predictionsElement.innerText.includes("投票结束"))) {
             openedLinks[todayKey].push(linkURL);
             saveOpenedLinks();
             setTimeout(() => {doNext(linkURL)}, 1000);
@@ -278,7 +281,7 @@
                     voteOnPredictions(lowestIndex, isRandom, 1);
                 }, 2000);
             }
-        }, 2400)
+        }, 1500)
     }
 
     function voteOnPredictions(lowestIndex, isRandom, tabIndex) {
