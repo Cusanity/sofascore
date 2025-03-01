@@ -5,6 +5,8 @@
 // @description  每10秒点击所有未点击的 <a data-testid="event_cell">，支持动态加载，并自动滚动加载
 // @author       ChatGPT
 // @match        https://www.sofascore.com/zh/*/2025-*
+// @updateURL    https://github.com/Cusanity/sofascore/raw/refs/heads/main/Auto%20Open%20Event%20Links.user.js
+// @downloadURL  https://github.com/Cusanity/sofascore/raw/refs/heads/main/Auto%20Open%20Event%20Links.user.js
 // @grant        none
 // ==/UserScript==
 
