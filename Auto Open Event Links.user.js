@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Open Event Links
 // @namespace    http://tampermonkey.net/
-// @version      1.4
+// @version      1.6.66
 // @description  每10秒点击所有未点击的 <a data-testid="event_cell">，支持动态加载，并自动滚动加载
 // @author       ChatGPT
 // @match        https://www.sofascore.com/zh/*/2025-*
@@ -26,7 +26,7 @@
     function getNextCategory(current) {
         let index = categoryList.indexOf(current);
         if (index === -1 || index === categoryList.length - 1) {
-            return "";
+            return "football";
         }
         return categoryList[index + 1];
     }
@@ -197,7 +197,7 @@
             })
             .map(link => link.getAttribute('href'))
             .filter(href => href && !openedLinks[todayKey].includes(href) && href !== linkURL);
-
+        updateRedirectBox(allowedSecondsBeforeRedirection - showAllButtonCount);
         updateStatusBox(remainingLinks.length, false);
 
         if (remainingLinks.length === 0) {
@@ -207,7 +207,10 @@
         }
 
         let linkElement = document.querySelector(`a[href="${remainingLinks[0]}"]`);
-        if (!linkElement) return;
+        if (!linkElement) {
+          setTimeout(doNext, 5000);
+          return;
+        }
 
         linkElement.scrollIntoView({ behavior: "smooth", block: "center" });
         linkElement.click();
@@ -221,6 +224,7 @@
         // 如果该元素存在，并且内部文本包含 "你的投票"，说明已经投过票，直接跳过
         if (predictionsElement && (predictionsElement.innerText.includes("你的投票") || predictionsElement.innerText.includes("投票结束"))) {
             openedLinks[todayKey].push(linkURL);
+            saveOpenedLinks();
             setTimeout(() => {doNext(linkURL)}, 1000);
             return;
         }
