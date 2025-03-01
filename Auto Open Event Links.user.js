@@ -22,7 +22,7 @@
     let showAllButtonCount = 0;
     let allowedSecondsBeforeRedirection = 60;
     if (window.location.href.includes("football")) {
-      allowedSecondsBeforeRedirection = 300;
+      allowedSecondsBeforeRedirection = 366;
     }
 
     function getNextCategory(current) {
