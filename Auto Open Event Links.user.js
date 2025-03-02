@@ -21,7 +21,7 @@
     ];
     let showAllButtonCount = 0;
     let allowedSecondsBeforeRedirection = 60;
-    if (window.location.href.includes("football")) {
+    if (window.location.href.includes("/football/")) {
       allowedSecondsBeforeRedirection = 300;
     }
 
@@ -281,6 +281,9 @@
                     voteOnPredictions(lowestIndex, isRandom, 1);
                 }, 2000);
             }
+            else {
+              setTimeout(() => {doNext(linkURL)}, 1000);
+            }
         }, 1500)
     }
 
@@ -317,6 +320,7 @@
                 } else {
                 }
             } else {
+              setTimeout(doNext, 800);
             }
           }, 800
         )
