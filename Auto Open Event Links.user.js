@@ -30,8 +30,8 @@
             return "football";
         }
         let index = categoryList.indexOf(current);
-        if (index === -1 || index === categoryList.length - 1) {
-            return "football";
+        if (index < 0 || index >= categoryList.length - 1) {
+            return "";
         }
         return categoryList[index + 1];
     }
