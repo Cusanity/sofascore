@@ -26,6 +26,9 @@
     }
 
     function getNextCategory(current) {
+        if (window.location.href.includes("/football/")) {
+            return "football";
+        }
         let index = categoryList.indexOf(current);
         if (index === -1 || index === categoryList.length - 1) {
             return "football";
