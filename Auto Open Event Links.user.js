@@ -195,6 +195,23 @@
                     return false;
                 }
 
+                // 3. 排除比赛时间早于当前时间的比赛
+                let matchTimeRegex = /\b(\d{1,2}:\d{2})\b/; // 匹配 HH:MM 格式的时间
+                let match = link.innerText.match(matchTimeRegex);
+                
+                if (match) {
+                    let matchTime = match[1]; // 获取匹配到的时间字符串
+                    let [matchHour, matchMinute] = matchTime.split(':').map(Number);
+
+                    let now = new Date();
+                    let currentHour = now.getHours();
+                    let currentMinute = now.getMinutes();
+
+                    if (matchHour < currentHour || (matchHour === currentHour && matchMinute < currentMinute)) {
+                        return false; // 比赛时间早于当前时间
+                    }
+                }
+
                 return true; // 其他比赛继续保留
             })
             .map(link => link.getAttribute('href'))
